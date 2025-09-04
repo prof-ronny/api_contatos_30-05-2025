@@ -1,13 +1,15 @@
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 const conectarBanco = require('./config/db');
 const contatoRoutes = require('./routes/contatoRoutes');
 
 dotenv.config();
-const app = express();
+const app = express(cors());
 
 // Middleware para interpretar JSON no corpo das requisições
 app.use(express.json());
+app.use()
 
 // Rotas principais
 app.use('/api/contatos', contatoRoutes);
