@@ -5,11 +5,11 @@ const conectarBanco = require('./config/db');
 const contatoRoutes = require('./routes/contatoRoutes');
 
 dotenv.config();
-const app = express(cors());
+const app = express();
 
 // Middleware para interpretar JSON no corpo das requisições
 app.use(express.json());
-app.use()
+app.use(cors())
 
 // Rotas principais
 app.use('/api/contatos', contatoRoutes);
