@@ -7,19 +7,24 @@ const contatoSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: [true, 'O email é obrigatório']
+    required: [false]
   },
   endereco: {
     type: String,
-    required: [true, 'O endereço é obrigatório']
+    required: [false]
   },
   telefone: {
     type: String,
-    required: [true, 'O telefone é obrigatório']
+    required: [false]
   },
   foto: {
     type: String, // Pode ser uma URL ou caminho de arquivo
-    required: [true, 'A foto é obrigatória']
+    required: [false]
+  },
+  usuario: {
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'Usuario', 
+    required: true
   }
 }, {
   timestamps: true

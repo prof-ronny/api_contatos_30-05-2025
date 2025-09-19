@@ -2,7 +2,7 @@ const Contato = require('../models/contatoModel');
 
 exports.getAllContatos = async (req, res) => {
   try {
-    const contatos = await Contato.find();
+    const contatos = await Contato.find({ usuario: req.usuario.id });
     res.json(contatos);
   } catch (err) {
     res.status(500).json({ mensagem: 'Erro ao buscar contatos', erro: err.message });
@@ -11,7 +11,7 @@ exports.getAllContatos = async (req, res) => {
 
 exports.getContatoById = async (req, res) => {
   try {
-    const contato = await Contato.findById(req.params.id);
+    const contato = await Contato.findOne({ _id: req.params.id, usuario: req.usuario.id });
     if (!contato) return res.status(404).json({ mensagem: 'Contato não encontrado' });
     res.json(contato);
   } catch (err) {
@@ -21,7 +21,7 @@ exports.getContatoById = async (req, res) => {
 
 exports.createContato = async (req, res) => {
   try {
-    const novoContato = new Contato(req.body);
+    const novoContato = new Contato({ ...req.body, usuario: req.usuario.id });
     await novoContato.save();
     res.status(201).json(novoContato);
   } catch (err) {
@@ -31,7 +31,11 @@ exports.createContato = async (req, res) => {
 
 exports.updateContato = async (req, res) => {
   try {
-    const contatoAtualizado = await Contato.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const contatoAtualizado = await Contato.findOneAndUpdate(
+      { _id: req.params.id, usuario: req.usuario.id },
+      req.body,
+      { new: true }
+    );
     if (!contatoAtualizado) return res.status(404).json({ mensagem: 'Contato não encontrado' });
     res.json(contatoAtualizado);
   } catch (err) {
@@ -41,7 +45,7 @@ exports.updateContato = async (req, res) => {
 
 exports.deleteContato = async (req, res) => {
   try {
-    const contatoRemovido = await Contato.findByIdAndDelete(req.params.id);
+    const contatoRemovido = await Contato.findOneAndDelete({ _id: req.params.id, usuario: req.usuario.id });
     if (!contatoRemovido) return res.status(404).json({ mensagem: 'Contato não encontrado' });
     res.status(204).end();
   } catch (err) {
